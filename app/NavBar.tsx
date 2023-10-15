@@ -1,8 +1,12 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { PiBugThin } from "react-icons/pi";
+import classNames from "classnames";
 
 const NavBar = () => {
+  const CurrenPath = usePathname();
   const navList = [
     {
       label: "Dashboard",
@@ -24,7 +28,11 @@ const NavBar = () => {
           <Link
             key={nav.href}
             href={nav.href}
-            className=" text-zinc-500 hover:text-zinc-900 transition-colors"
+            className={classNames({
+              "text-zinc-900": CurrenPath === nav.href,
+              "text-zinc-500": CurrenPath !== nav.href,
+              "hover:text-zinc-900 transition-colors": true,
+            })}
           >
             {nav.label}
           </Link>
