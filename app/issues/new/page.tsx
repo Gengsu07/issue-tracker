@@ -26,6 +26,24 @@ const NewIssuePage = () => {
   } = useForm<Issue>({
     resolver: zodResolver(createIssueScheme),
   });
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setIsSubmitting(true);
+      await axios.post("/api/issue", data);
+      setIsSubmitting(false);
+      router.push("/issues");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const [titleErr, descErr] = [
+          error.response?.data.title?._errors,
+          error.response?.data.description?._errors,
+        ];
+        setError({ title: titleErr, description: descErr });
+        setIsSubmitting(false);
+      }
+    }
+  });
   return (
     <div className="max-w-xl">
       {(error.title || error.description) && (
@@ -36,26 +54,7 @@ const NewIssuePage = () => {
           </Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className=" space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setIsSubmitting(true);
-            await axios.post("/api/issue", data);
-            setIsSubmitting(false);
-            router.push("/issues");
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              const [titleErr, descErr] = [
-                error.response?.data.title?._errors,
-                error.response?.data.description?._errors,
-              ];
-              setError({ title: titleErr, description: descErr });
-              setIsSubmitting(false);
-            }
-          }
-        })}
-      >
+      <form className=" space-y-3" onSubmit={onSubmit}>
         <TextField.Input
           radius="large"
           placeholder="Issue title"
