@@ -10,12 +10,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueScheme } from "@/app/validationSchema";
 import ErrorMessage from "@/app/componets/ErrorMessage";
+import Spinner from "@/app/componets/Spinner";
 
 type Issue = z.infer<typeof createIssueScheme>;
 
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState<Issue>({ title: "", description: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     control,
@@ -38,7 +40,9 @@ const NewIssuePage = () => {
         className=" space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setIsSubmitting(true);
             await axios.post("/api/issue", data);
+            setIsSubmitting(false);
             router.push("/issues");
           } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -47,6 +51,7 @@ const NewIssuePage = () => {
                 error.response?.data.description?._errors,
               ];
               setError({ title: titleErr, description: descErr });
+              setIsSubmitting(false);
             }
           }
         })}
@@ -71,6 +76,7 @@ const NewIssuePage = () => {
 
         <Button variant="solid" size={"3"}>
           Submit New Issue
+          {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
