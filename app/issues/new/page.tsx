@@ -6,16 +6,23 @@ import "easymde/dist/easymde.min.css";
 import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createIssueScheme } from "@/app/validationSchema";
 
-interface Issue {
-  title: string;
-  description: string;
-}
+type Issue = z.infer<typeof createIssueScheme>;
 
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState<Issue>({ title: "", description: "" });
-  const { register, control, handleSubmit } = useForm<Issue>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Issue>({
+    resolver: zodResolver(createIssueScheme),
+  });
   return (
     <div className="max-w-xl">
       {(error.title || error.description) && (
@@ -48,6 +55,7 @@ const NewIssuePage = () => {
           placeholder="Issue title"
           {...register("title")}
         />
+        {errors.title && <p className="text-red-600">{errors.title.message}</p>}
         <Controller
           name="description"
           control={control}
@@ -55,6 +63,9 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Issue description" {...field} />
           )}
         />
+        {errors.description && (
+          <p className="text-red-600">{errors.description.message}</p>
+        )}
 
         <Button variant="solid" size={"3"}>
           Submit New Issue
