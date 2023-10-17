@@ -1,5 +1,5 @@
 "use client";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Button, Callout, Text, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueScheme } from "@/app/validationSchema";
+import ErrorMessage from "@/app/componets/ErrorMessage";
 
 type Issue = z.infer<typeof createIssueScheme>;
 
@@ -55,7 +56,9 @@ const NewIssuePage = () => {
           placeholder="Issue title"
           {...register("title")}
         />
-        {errors.title && <p className="text-red-600">{errors.title.message}</p>}
+
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
         <Controller
           name="description"
           control={control}
@@ -63,9 +66,8 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Issue description" {...field} />
           )}
         />
-        {errors.description && (
-          <p className="text-red-600">{errors.description.message}</p>
-        )}
+
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button variant="solid" size={"3"}>
           Submit New Issue
