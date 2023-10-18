@@ -19,9 +19,9 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className="flex space-x-6 mb-5 px-5 border-b h-14 items-center">
+    <nav className="flex space-x-6 mb-5 px-5 border-b h-14 items-center shadow-md bg-biru-djp">
       <Link href={"/"}>
-        <PiBugThin size={50} color="zinc" />
+        <PiBugThin size={50} color="white" />
       </Link>
       <ul className="flex space-x-6">
         {navList.map((nav) => (
@@ -29,9 +29,9 @@ const NavBar = () => {
             key={nav.href}
             href={nav.href}
             className={classNames({
-              "text-zinc-900": CurrenPath === nav.href,
-              "text-zinc-500": CurrenPath !== nav.href,
-              "hover:text-zinc-900 transition-colors": true,
+              "text-kuning-djp": CurrenPath === nav.href,
+              "text-white": CurrenPath !== nav.href,
+              "hover:text-kuning-djp transition-colors": true,
             })}
           >
             {nav.label}
