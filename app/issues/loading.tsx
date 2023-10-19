@@ -1,12 +1,10 @@
-import prisma from "@/prisma/client";
 import { Button, Table } from "@radix-ui/themes";
 import Link from "next/link";
-import React from "react";
-import IssueStatusBadge from "../componets/IssueStatusBadge";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany();
-
+const LoadingSkeleton = () => {
+  const issues = [1, 2, 4, 5, 6, 7, 8, 9, 10];
   return (
     <div>
       <h1>IssuesPage</h1>
@@ -17,30 +15,32 @@ const IssuesPage = async () => {
       </div>
       <Table.Root variant="surface">
         <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell ">
+          <Table.Row className="bg-blue-400">
+            <Table.ColumnHeaderCell className="text-white">
+              Title
+            </Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className="hidden md:table-cell text-white">
               Status
             </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell ">
+            <Table.ColumnHeaderCell className="hidden md:table-cell text-white">
               Created At
             </Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {issues.map((issue) => (
-            <Table.Row key={issue.id}>
+            <Table.Row key={issue}>
               <Table.Cell>
-                {issue.title}
+                <Skeleton />
                 <div className="font-bold block md:hidden">
-                  <IssueStatusBadge status={issue.status} />
+                  <Skeleton />
                 </div>
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
-                <IssueStatusBadge status={issue.status} />
+                <Skeleton />
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
-                {issue.createdAt.toDateString()}
+                <Skeleton />
               </Table.Cell>
             </Table.Row>
           ))}
@@ -50,4 +50,4 @@ const IssuesPage = async () => {
   );
 };
 
-export default IssuesPage;
+export default LoadingSkeleton;
