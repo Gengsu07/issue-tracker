@@ -29,9 +29,9 @@ const NavBar = () => {
             key={nav.href}
             href={nav.href}
             className={classNames({
-              "text-kuning-djp": CurrenPath === nav.href,
+              "text-kuning-djp font-bold": CurrenPath === nav.href,
               "text-white": CurrenPath !== nav.href,
-              "hover:text-kuning-djp transition-colors": true,
+              "hover:text-kuning-djp hover:font-bold transition-colors ": true,
             })}
           >
             {nav.label}

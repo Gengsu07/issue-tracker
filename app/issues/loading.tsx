@@ -1,7 +1,6 @@
+import { Skeleton } from "@/app/componets";
 import { Button, Table } from "@radix-ui/themes";
 import Link from "next/link";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 const LoadingSkeleton = () => {
   const issues = [1, 2, 4, 5, 6, 7, 8, 9, 10];
