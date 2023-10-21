@@ -9,7 +9,7 @@ const LoadingDetailIssue = () => {
         <Skeleton width="3rem" />
         <Skeleton width="8rem" />
       </Flex>
-      <Card className="prose mt-3">
+      <Card className="prose">
         <Skeleton count={3} />
       </Card>
     </Box>
