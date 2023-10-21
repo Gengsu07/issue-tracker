@@ -21,9 +21,8 @@ type IssueFormData = z.infer<typeof IssueScheme>;
 
 interface Props {
   issue?: Issue;
-  ComeFrom?: string;
 }
-const IssueForm = ({ issue, ComeFrom }: Props) => {
+const IssueForm = ({ issue }: Props) => {
   const router = useRouter();
   const [error, setError] = useState<IssueFormData>({
     title: "",
@@ -42,12 +41,10 @@ const IssueForm = ({ issue, ComeFrom }: Props) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setIsSubmitting(true);
-      if (!ComeFrom) {
-        await axios.post("/api/issue", data);
-      }
-      if (ComeFrom === "edit") {
-        await axios.patch(`/api/issue/${issue?.id}`, data);
-      }
+
+      if (issue) await axios.patch(`/api/issue/${issue?.id}`, data);
+      else await axios.post("/api/issue", data);
+
       setIsSubmitting(false);
       router.push("/issues");
     } catch (error) {
@@ -96,7 +93,7 @@ const IssueForm = ({ issue, ComeFrom }: Props) => {
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button variant="solid" size={"3"}>
-          Submit New Issue
+          {issue ? "Update Issue" : "Submit New Issue"}
           {isSubmitting && <Spinner />}
         </Button>
       </form>
