@@ -4,13 +4,12 @@ import Spinner from "@/app/componets/Spinner";
 import { IssueScheme } from "@/app/validationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Issue } from "@prisma/client";
-import { Button, Callout, Select, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
@@ -22,6 +21,7 @@ type IssueFormData = z.infer<typeof IssueScheme>;
 interface Props {
   issue?: Issue;
 }
+
 const IssueForm = ({ issue }: Props) => {
   const router = useRouter();
   const [error, setError] = useState<IssueFormData>({
@@ -47,6 +47,7 @@ const IssueForm = ({ issue }: Props) => {
 
       setIsSubmitting(false);
       router.push("/issues");
+      router.refresh();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const [titleErr, descErr] = [
@@ -58,10 +59,6 @@ const IssueForm = ({ issue }: Props) => {
       }
     }
   });
-
-  const ForwardedRefSimpleMDE = React.forwardRef((props, ref) => (
-    <SimpleMDE {...props} placeholder="Issue description" />
-  ));
 
   return (
     <div className="max-w-xl">
@@ -87,7 +84,7 @@ const IssueForm = ({ issue }: Props) => {
           name="description"
           control={control}
           defaultValue={issue?.description}
-          render={({ field }) => <ForwardedRefSimpleMDE {...field} />}
+          render={({ field }) => <SimpleMDE {...field} />}
         />
 
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
