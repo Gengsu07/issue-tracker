@@ -30,7 +30,7 @@ export default function RootLayout({
         <ProviderSession>
           <Theme accentColor="blue">
             <NavBar />
-            <main className="px-3">
+            <main className="px-5">
               <Container>{children}</Container>
             </main>
           </Theme>
