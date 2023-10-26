@@ -38,9 +38,8 @@ const NavBar = () => {
             </Link>
             <ul className="flex space-x-6">
               {navList.map((nav) => (
-                <li>
+                <li key={nav.href}>
                   <Link
-                    key={nav.href}
                     href={nav.href}
                     className={classNames({
                       "text-kuning-djp font-bold": CurrenPath === nav.href,
@@ -65,6 +64,7 @@ const NavBar = () => {
                     size="2"
                     radius="full"
                     className="cursor-pointer"
+                    referrerPolicy="no-referrer"
                   />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
