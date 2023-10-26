@@ -1,4 +1,5 @@
 "use client";
+import { Skeleton } from "@/app/componets";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -68,7 +69,7 @@ const NavList = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton width="3rem" />;
   if (status === "unauthenticated")
     return (
       <Link href="/api/auth/signin" className="nav-link">
