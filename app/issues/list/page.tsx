@@ -1,18 +1,12 @@
 import prisma from "@/prisma/client";
-import { Table } from "@radix-ui/themes";
-import NextLink from "next/link";
-import { IssueStatusBadge, LinkComponent } from "../../componets";
-import IssueAction from "./IssueAction";
-import { Issue, Status } from "@prisma/client";
-import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { Status } from "@prisma/client";
 import Pagination from "../_components/Pagination";
+import IssueAction from "./IssueAction";
+import IssuesTable, { IssueQuery, columnName } from "./IssuesTable";
+import { Flex } from "@radix-ui/themes";
 
 interface Props {
-  searchParams: {
-    status: Status;
-    orderBy: keyof Issue;
-    page: string;
-  };
+  searchParams: IssueQuery;
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
@@ -23,9 +17,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
 
   const where = { status };
 
-  const orderBy = columnConfig
-    .map((col) => col.value)
-    .includes(searchParams.orderBy)
+  const orderBy = columnName.includes(searchParams.orderBy)
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
@@ -41,18 +33,16 @@ const IssuesPage = async ({ searchParams }: Props) => {
   });
 
   return (
-    <div>
+    <Flex gap="3" direction="column">
       <h1>IssuesPage</h1>
-      <div className="my-3">
-        <IssueAction />
-      </div>
-
+      <IssueAction />
+      <IssuesTable searchParams={searchParams} issues={issues} />
       <Pagination
         currentPage={currentPage}
-        pageSize={20}
+        pageSize={10}
         itemCount={itemCount}
       />
-    </div>
+    </Flex>
   );
 };
 export const dynamic = "force-dynamic";
