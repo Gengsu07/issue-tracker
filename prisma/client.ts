@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client'
+import { log } from 'console'
 
 const prismaClientSingleton = () => {
-  return new PrismaClient()
+  return new PrismaClient(
+  )
 }
 
 type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>
