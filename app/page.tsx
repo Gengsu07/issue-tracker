@@ -1,10 +1,9 @@
-import { Flex, Grid } from "@radix-ui/themes";
-import LatestIssue from "./LatestIssue";
-import Pagination from "./issues/_components/Pagination";
-import IssueStatusFilter from "./issues/list/IssueStatusFilter";
-import IssueSummary from "./IssueSummary";
 import prisma from "@/prisma/client";
+import { Flex, Grid } from "@radix-ui/themes";
 import IssueBarChart from "./IssueBarChart";
+import IssueSummary from "./IssueSummary";
+import LatestIssue from "./LatestIssue";
+import { Metadata } from "next";
 
 export default async function Home() {
   const open_issues = await prisma.issue.count({
@@ -34,3 +33,10 @@ export default async function Home() {
     </div>
   );
 }
+export const metadata: Metadata = {
+  title: "Dashboard Issue Tracker",
+  description: "Track KPI and Summary of your organization development issues",
+  applicationName: "Gengsu-IssueTracker",
+  authors: [{ name: "Sugeng Wahyudi" }],
+  keywords: "Track your Organization Development Issues",
+};

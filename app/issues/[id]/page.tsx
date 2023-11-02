@@ -7,6 +7,7 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import AuthOptions from "@/app/api/auth/AuthOptions";
 import { getServerSession } from "next-auth";
 import AssignneSelect from "./AssigneeSelect";
+import { Metadata } from "next";
 
 interface Props {
   params: { id: string };
@@ -38,4 +39,16 @@ const DetailIssuePage = async ({ params }: Props) => {
   );
 };
 
+export async function generateMetadata({ params }: Props) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+  return {
+    title: "Issue Detail Page",
+    description: issue?.title,
+    applicationName: "Gengsu-IssueTracker",
+    authors: [{ name: "Sugeng Wahyudi" }],
+    keywords: "Track your Organization Development Issues",
+  };
+}
 export default DetailIssuePage;
